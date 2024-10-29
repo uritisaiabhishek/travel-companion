@@ -1,0 +1,80 @@
+.groupCard {
+    width: calc((100% - 60px) / 4);
+    
+    // Media queries for responsiveness
+    @media (max-width: 768px) {
+      width: calc((100% - 20px) / 2);
+    }
+    
+    @media (max-width: 480px) {
+      width: 100%;
+    }
+
+    text-decoration: none;
+    padding: 20px;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b); // Gradient background for a fancy look
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); // Stronger shadow for more depth
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+    // Decorative border effect
+    &::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      left: -55%;
+      width: 200%;
+      height: 150%;
+      background: rgba(255, 255, 255, 0.1);
+      transform: rotate(45deg);
+      transition: opacity 0.3s ease;
+    }
+  
+    // Hover effect
+    &:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+    }
+  
+    &:hover::before {
+      opacity: 0.2;
+    }
+  
+    h4 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+  
+    p {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      opacity: 0.9;
+    }
+  
+    span {
+      display: inline-block;
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 0.875rem;
+    }
+    
+    .memberCounttext{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 30px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .membersCount{
+      font-size: 40px;
+      font-weight: 900;
+    }
+  }
+  

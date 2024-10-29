@@ -1,0 +1,39 @@
+
+/* Enhanced Google login button */
+.google-login-button {
+    width: 100%;
+    padding: 12px 20px;
+    background-color: white;
+    color: #757575; /* Neutral text color */
+    border: 1px solid #ddd;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Space for an optional Google icon */
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for a floating effect */
+
+    /* Optional Google icon styling */
+    .google-icon {
+      width: 18px;
+      height: 18px;
+    }
+    
+    /* Hover effect for Google login button */
+    .google-login-button:hover {
+      background-color: #f1f1f1; /* Light gray background on hover */
+      border-color: #ccc; /* Slightly darker border on hover */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* More pronounced shadow on hover */
+    }
+    
+    /* Active state for a pressed button effect */
+    .google-login-button:active {
+      background-color: #e0e0e0; /* Darker background when pressed */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Smaller shadow for a pressed effect */
+      transform: scale(0.98); /* Slightly shrink the button */
+    }
+  
+}

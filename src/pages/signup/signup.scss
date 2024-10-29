@@ -1,0 +1,68 @@
+// signup.scss
+@import '../../scss/constants.scss';
+
+.signup-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: $background;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    
+    h2 {
+      margin-bottom: 20px;
+      color: $primary;
+      font-size: $fontSize-large;
+    }
+  
+    .signup-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      
+      .form-group {
+        text-align: left;
+        
+        
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #4caf50;
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s ease; /* Smooth transition for border */
+  }
+  
+  input:focus {
+    border-color: #4caf50;
+  }
+
+      }
+      
+      .signup-button {
+        padding: 12px 20px;
+        background-color: $primary;
+        color: $text-primary;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: $fontSize-large;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+        
+        &:hover {
+          background-color: $primary-dark;
+        }
+      }
+    }
+  }
+  

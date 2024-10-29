@@ -1,0 +1,21 @@
+// constants.scss
+// Colors
+$primary: #ff4d4d;          // A bright red for primary color
+$primary-dark: #d93636;     // A darker shade of red
+$secondary: #ff6b6b;        // Slightly lighter red for secondary elements
+$background: #f9f9f9;       // Light background color for contrast
+$accent: #ffe0e0;           // Light red accent color
+$accent-dark: #ffcccc;      // Darker shade for accent color (example)
+$text-primary: #fff;        // White text color for contrast
+$text-secondary: #333;      // Dark text color for readability
+$text-light: #fff;          // Light color for text on dark backgrounds
+
+// Font Sizes
+$fontSize: 16px;            // Base font size
+$fontSize-large: 18px;      // Large font size
+$fontSize-small: 14px;      // Small font size
+
+// Spacing
+$headerHeight: 65px;        // Height of the header
+$footerHeight: 75px;        // Height of the footer
+$padding-horizontal: 2rem;  // Horizontal padding for layout

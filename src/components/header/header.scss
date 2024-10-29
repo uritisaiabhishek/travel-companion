@@ -1,0 +1,62 @@
+@import '../../scss/constants.scss';
+
+header {
+  height: $headerHeight;
+  background: linear-gradient(135deg, $primary, $primary-dark);
+  padding: 0 $padding-horizontal;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: $text-primary;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  .logo {
+    font-size: $fontSize-large;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: $accent; // Use accent color for logo
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+
+    a {
+        color: $text-primary; // Keep link text color
+        margin-left: 1.5rem;
+        text-decoration: none;
+        font-size: $fontSize;
+        font-weight: 500;
+        transition: color 0.3s ease;
+
+        &:hover {
+            color: $accent;
+        }
+    }
+
+    button {
+        background-color: $primary; // Use a darker primary color for the button background
+        border: none;
+        color: $text-secondary; // Use a dark text color for contrast
+        margin-left: 1.5rem;
+        font-size: $fontSize;
+        font-weight: 600;
+        padding: 0.5rem 1.2rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+
+        &:hover {
+            background-color: $secondary; // Change background on hover to a lighter shade
+            color: $text-primary; // Change text color on hover to white for contrast
+        }
+    }
+  }
+
+}

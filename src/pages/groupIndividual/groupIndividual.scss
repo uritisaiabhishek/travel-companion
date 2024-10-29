@@ -1,0 +1,148 @@
+@import '../../scss/constants.scss';
+@import '../../scss/utils.scss';
+
+.group-page {
+  padding: 20px;
+  background-color: $background; // Use variable for background
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+.group-id {
+  font-size: $fontSize-small;
+  color: $text-secondary; // Use variable for text color
+}
+
+.user-tags {
+  @extend .flex;
+  @extend .flex-wrap; 
+  margin-bottom: 1rem; 
+}
+
+.user-tag {
+  background-color: $secondary; // Use variable for user tag background
+  color: $text-primary; // Use variable for text color
+  border-radius: 20px; 
+  padding: 0.5rem 1rem; 
+  margin: 0.5rem; 
+  font-size: $fontSize-small; 
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: darken($secondary, 10%);
+  }
+}
+
+.checklist {
+  margin-top: 1rem; 
+  @extend .flex;
+  @extend .flex-wrap;
+  @extend .g-10; // Space between items
+}
+
+.checklist-item {
+  flex: 1 1 25%; // 4 items per row on desktop
+  max-width: 350px; // Max width for each item
+  @extend .flex; 
+  @extend .align-items-center; 
+  @extend .justify-content-between; 
+  margin-bottom: 0.5rem; 
+  padding: 10px;
+  background-color: $text-light; // Use variable for background
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  transition: box-shadow 0.2s;
+
+  // Strikethrough and color change when checked
+  &.checked {
+    background-color: $accent; // Change background color when checked
+    color: $text-light; // Change text color when checked
+    text-decoration: line-through; // Strike-through text
+    opacity: 0.5; // Lighten the text color visually
+  }
+
+  // Hide the delete button when checked
+  .delete-button {
+    display: inline; // Default display
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    // Use selector to hide when the item is checked
+    &.checked ~ & {
+      display: none; // Hide the button when item is checked
+    }
+  }
+}
+
+.checklist-item label {
+  @extend .flex; 
+  @extend .align-items-center; 
+  cursor: pointer; 
+  flex: 1; // Allow label to take remaining space
+
+  input {
+    margin-right: 10px; // Space between checkbox and label text
+    appearance: none; // Remove default checkbox styling
+    width: 20px; // Custom checkbox width
+    height: 20px; // Custom checkbox height
+    border: 2px solid $primary; // Use theme color for checkbox border
+    border-radius: 4px; // Rounded corners
+    cursor: pointer;
+
+    &:checked {
+      background-color: $primary; // Background color when checked
+      border-color: $primary-dark; // Darker border when checked
+      position: relative;
+
+    }
+  }
+}
+
+.expense-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+  
+    th {
+      background-color: $primary; // Use your theme color for header
+      color: $text-primary; // White text for contrast
+    }
+  
+    .expense-item {
+      &:hover {
+        background-color: $accent; // Change background color on hover
+      }
+    }
+  
+    .edit-button, .delete-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2rem;
+      margin-right: 5px;
+      
+      &:hover {
+        color: darken($primary, 15%);
+      }
+    }
+}   
+
+// Media queries for responsiveness
+@media (max-width: 768px) {
+  .checklist-item {
+    flex: 1 1 50%; // 2 items per row on tablet
+  }
+}
+
+@media (max-width: 480px) {
+  .checklist-item {
+    flex: 1 1 100%; // 1 item per row on mobile
+  }
+}
+}

@@ -1,0 +1,75 @@
+@import './scss/constants.scss';
+@import './scss/utils.scss';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+// Enhanced main-content styling
+.main-content {
+  min-height: calc(95vh - (2 * $headerHeight));
+  padding: 2rem;
+  background: $background; // Using background color defined in constants.scss
+  border-radius: 10px; // Slight rounding for visual appeal
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); // Shadow for elevated look
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+
+  // Add a subtle background pattern
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba($primary-dark, 0.05);
+    z-index: -1;
+    opacity: 0.1;
+  }
+
+  // Typography styling
+  h1, h2, h3, h4, h5, h6 {
+    color: $primary-dark;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-transform: capitalize;
+  }
+
+  p {
+    font-size: $fontSize;
+    color: $text-secondary;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  // Utility classes for spacing and alignment
+  .flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .section {
+    margin-bottom: 2rem;
+  }
+
+  .btn-primary {
+    background-color: $primary;
+    color: $text-primary;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: $fontSize;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: $primary-dark;
+    }
+  }
+
+}

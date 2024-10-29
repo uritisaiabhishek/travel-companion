@@ -1,0 +1,93 @@
+/* login.scss */
+@import '../../scss/constants.scss';
+
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #f9f9f9; /* Lighter background for a cleaner look */
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* More pronounced shadow */
+  text-align: center;
+
+
+  hr{
+    margin: 15px 0;
+  }
+  
+h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 15px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Add gap between form elements */
+}
+
+.form-group {
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #4caf50;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s ease; /* Smooth transition for border */
+}
+
+input:focus {
+  border-color: #4caf50;
+}
+
+/* Login button with primary color theme */
+.login-button {
+  padding: 12px 20px;
+  background-color: $primary;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s ease; /* Smooth transition for hover */
+}
+
+.login-button:hover {
+  background-color: $primary-dark; /* Darker shade for hover */
+}
+
+
+
+/* Adding some spacing and structure */
+form {
+  margin-bottom: 20px;
+}
+}
+
+.auth-re-route{
+  text-align: start;
+  font-weight: 500;
+  a{
+    color: $primary;
+    text-decoration: none;
+  }
+}
