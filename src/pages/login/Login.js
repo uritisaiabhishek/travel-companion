@@ -1,11 +1,12 @@
 // Login.js
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebaseConfig';
 import './login.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import GoogleLogin from '../../components/GoogleLogin/GoogleLogin';
 import { AuthContext } from '../../context/authContext';
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -23,6 +24,8 @@ const Login = () => {
       // Call login function from context
       login({ name: user.displayName, email: user.email, uid: user.uid });
       navigate('/');
+      toast.success("Logged in successfully");
+
     } catch (err) {
       setError('Failed to log in. Please check your credentials.');
       console.error(err);

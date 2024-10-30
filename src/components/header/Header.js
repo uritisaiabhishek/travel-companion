@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import './header.scss';
 import { AuthContext } from '../../context/authContext';
 import { useContext } from 'react';
+import { toast } from 'react-toastify';
 
 const Header = () => {
   const { isLoggedIn, logout } = useContext(AuthContext); // Get the logout function from context
 
   const handleLogout = () => {
-    logout(); // Set the login state to false using the logout function
-    console.log('User logged out');
+    logout();
+    toast.success("Logged out successfully");
   };
 
   return (

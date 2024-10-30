@@ -19,9 +19,9 @@ function App() {
             <Route path="/login" element={<AuthMiddleware component={Login} authRequired={false} />} />            
             <Route path="/signup" element={<AuthMiddleware component={Signup} authRequired={false} />} />
 
-            <Route path="/" element={<AuthMiddleware component={Homepage} authRequired={true} />} />
-            <Route path="/profile" element={<AuthMiddleware component={Profile} />} authRequired={true} />
-            <Route path="/groups/:groupId" element={<AuthMiddleware component={GroupIndividual} authRequired={true} />} />
+            <Route path="/" element={<AuthMiddleware authRequired={true} component={Homepage} />} />
+            <Route path="/profile" element={<AuthMiddleware authRequired={true} component={Profile} />} />
+            <Route path="/groups/:groupId" element={<AuthMiddleware authRequired={true} component={GroupIndividual} />} />
           
         </Routes>
       

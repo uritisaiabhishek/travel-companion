@@ -1,80 +1,97 @@
 .groupCard {
-    width: calc((100% - 60px) / 4);
-    
-    // Media queries for responsiveness
-    @media (max-width: 768px) {
-      width: calc((100% - 20px) / 2);
-    }
-    
-    @media (max-width: 480px) {
-      width: 100%;
-    }
+  width: calc((100% - 60px) / 4);
+  position: relative;
+  padding: 20px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none;
 
+  // Increase the height by adding a min-height
+  min-height: 150px; // Adjust this value as needed
+
+  @media (max-width: 768px) {
+    width: calc((100% - 20px) / 2);
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    left: -55%;
+    width: 200%;
+    height: 150%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(45deg);
+    z-index: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover::before {
+    opacity: 0.2;
+  }
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .groupContent {
+    display: block;
     text-decoration: none;
-    padding: 20px;
-    border-radius: 15px;
-    background: linear-gradient(135deg, #ff7e5f, #feb47b); // Gradient background for a fancy look
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); // Stronger shadow for more depth
-    color: #fff;
+    color: inherit;
     position: relative;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  
-    // Decorative border effect
-    &::before {
-      content: '';
-      position: absolute;
-      top: -40%;
-      left: -55%;
-      width: 200%;
-      height: 150%;
-      background: rgba(255, 255, 255, 0.1);
-      transform: rotate(45deg);
-      transition: opacity 0.3s ease;
-    }
-  
-    // Hover effect
-    &:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
-    }
-  
-    &:hover::before {
-      opacity: 0.2;
-    }
-  
+    z-index: 1;
+
     h4 {
       font-size: 1.5rem;
       margin-bottom: 15px;
       font-weight: bold;
     }
-  
-    p {
-      font-size: 1rem;
-      margin-bottom: 10px;
-      opacity: 0.9;
-    }
-  
-    span {
-      display: inline-block;
-      background-color: rgba(255, 255, 255, 0.2);
-      padding: 5px 10px;
-      border-radius: 5px;
-      font-size: 0.875rem;
-    }
-    
-    .memberCounttext{
+
+    .memberCounttext {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 30px;
+      font-size: 20px;
       font-weight: 800;
-      text-transform: uppercase;
     }
 
-    .membersCount{
-      font-size: 40px;
+    .membersCount {
+      font-size: 25px;
       font-weight: 900;
     }
   }
-  
+
+  .buttons {
+    position: absolute;
+    bottom: 10px; // Adjust position as needed
+    right: 10px;  // Adjust position as needed
+
+    .editGroupBtn,
+    .deleteGroupBtn {
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      font-size: 1.2rem;
+      color: #fff;
+      z-index: 2;
+      transition: color 0.3s;
+
+      &:hover {
+        color: #000;
+      }
+
+      &:first-child {
+        margin-right: 10px; // Space between buttons
+      }
+    }
+  }
+}

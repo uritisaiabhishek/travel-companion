@@ -5,11 +5,12 @@ export const AuthContext = createContext();
 
 // Create the provider component
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [loggedUser, setLoggedUser] = useState(null);
 
   // Check for existing session data
   useEffect(() => {
+    
     const storedIsLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
     const storedUser = sessionStorage.getItem('loggedUser');
     

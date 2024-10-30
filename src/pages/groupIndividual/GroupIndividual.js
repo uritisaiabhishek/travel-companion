@@ -6,6 +6,7 @@ import { auth, db } from '../../firebaseConfig';
 import Login from '../login/Login';
 import Modal from '../../components/modal/Modal';
 import { doc, updateDoc, arrayUnion, arrayRemove, getDoc } from 'firebase/firestore';
+import Loading from '../../components/Loading/Loading';
 
 
 const GroupIndividual = () => {
@@ -14,23 +15,36 @@ const GroupIndividual = () => {
   const [group, setGroup] = useState([]);
   const { groupId } = useParams();
 
+  
+  const [isGroupLoading, setIsGroupLoading] = useState(false);
+  
   const [checkList, setCheckList] = useState(group?.checkList || []);
   const [expenses, setExpenses] = useState(group?.expenses || []);
   const [showAddPlaceModal, setShowAddPlaceModal] = useState(false);
   const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
-  const [editingExpense, setEditingExpense] = useState(null); // New state for editing expense
-
+  const [editingExpense, setEditingExpense] = useState(null);
   const [expenseName, setExpenseName] = useState('');
   const [expenseDescription, setExpenseDescription] = useState('');
   const [expenseCost, setExpenseCost] = useState('');
   const [expenseSpentBy, setExpenseSpentBy] = useState('');
   const [expenseIncludedUsers, setExpenseIncludedUsers] = useState([]);
+  const [totalTripCost, setTotalTripCost] = useState(0);
   
   useEffect(() => {
+
+    setTotalTripCost(expenses.reduce((sum, expense) => sum + parseFloat(expense.expenseCost || 0), 0));
+
+  }, [expenses]);
+
+  useEffect(() => {
+    setIsGroupLoading(true);
     // Fetch the group data by ID when the component mounts
     const fetchGroupData = async () => {
       const fetchedGroup = await fetchGroupById(groupId);
       setGroup(fetchedGroup);
+      setCheckList(fetchedGroup.checkList);
+      setExpenses(fetchedGroup.expenses);
+      setIsGroupLoading(false);
     };
     fetchGroupData();
   }, [groupId]); // Depend on groupId instead of group
@@ -41,14 +55,12 @@ const GroupIndividual = () => {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        console.log("Group Data:", docSnap.data(), docSnap.id);
         return { groupId: docSnap.id, ...docSnap.data() };
       } else {
-        console.log("No such document!");
         return null;
       }
     } catch (error) {
-      console.error("Error fetching document:", error);
+      // console.error("Error fetching document:", error);
       return null;
     }
   };
@@ -77,11 +89,73 @@ const GroupIndividual = () => {
         checkList: updatedCheckList,
       });
     } catch (error) {
-      console.error("Error updating checkbox state in Firebase:", error);
+      // console.error("Error updating checkbox state in Firebase:", error);
     }
   };
   
+  // Helper function to calculate each user's financials
+  const calculateUserFinancials = (userName) => {
+    let numberOfUsers = group.groupUsers.length;
+
+    let amountSpent = 0;
+    let totalAmountOwedToOthers = 0;
+    let totalAmountOwedToUser = 0;
+    let amountsOwedDetails = {};
+
+    // Initialize amounts owed details for tracking
+    group.groupUsers.forEach((user) => {
+      if (user.name !== userName) {
+        amountsOwedDetails[user.name] = { owedTo: 0, owedFrom: 0 };
+      }
+    });
+
+    // Calculate expenses
+    expenses.forEach((expense) => {
+      const sharePerUser = expense.cost / numberOfUsers;
+
+      // If this user paid for the expense, calculate how much others owe them
+      if (expense.paidBy === userName) {
+        amountSpent += expense.cost;
+        group.groupUsers.forEach((user) => {
+          if (user.name !== userName) {
+            amountsOwedDetails[user.name].owedFrom += sharePerUser;
+            totalAmountOwedToUser += sharePerUser;
+          }
+        });
+      } else {
+        // If another user paid for the expense, calculate how much this user owes
+        if (userName !== expense.paidBy) {
+          amountsOwedDetails[expense.paidBy].owedTo += sharePerUser;
+          totalAmountOwedToOthers += sharePerUser;
+        }
+      }
+    });
+
+    // Calculate the net balance for the current user
+    const amountGetBack = totalAmountOwedToUser - totalAmountOwedToOthers;
+
+    // Format the amounts owed details
+    const getBackDetails = Object.entries(amountsOwedDetails)
+      .map(([user, { owedTo, owedFrom }]) => ({
+        from: user,
+        amountOwedTo: owedTo.toFixed(3),
+        amountOwedFrom: owedFrom.toFixed(3),
+        netAmount: (owedFrom - owedTo).toFixed(3)
+      }))
+      .filter(({ netAmount }) => netAmount !== "0.000");
+
+    return {
+      tripBudget: totalTripCost / numberOfUsers,
+      amountSpent,
+      amountGetBack,
+      getBackDetails
+    };
+  };
+
   const handleDeletePlace = async (place) => {
+    const confirmDeletePlace = window.confirm("Are you sure you want to delete this place?");
+    if (!confirmDeletePlace) return;
+
     const updatedCheckList = checkList.filter(item => item !== place);
     setCheckList(updatedCheckList);
 
@@ -92,14 +166,25 @@ const GroupIndividual = () => {
         checkList: arrayRemove(place),
       });
     } catch (error) {
-      console.error("Error removing place from Firebase:", error);
+      // console.error("Error removing place from Firebase:", error);
     }
 
   };
 
-  const handleDeleteExpense = (expenseId) => {
+  const handleDeleteExpense = async (expenseId) => {
+    const confirmDeleteExpense = window.confirm("Are you sure you want to delete this expense?");
+    if (!confirmDeleteExpense) return;
+
     const updatedExpenses = expenses.filter(expense => expense.expenseId !== expenseId);
     setExpenses(updatedExpenses);
+    // Update Firebase by removing the expense
+    try {
+      const groupDocRef = doc(db, 'travelGroups', groupId);
+      await updateDoc(groupDocRef, { expenses: updatedExpenses });
+    } catch (error) {
+      console.error("Error removing expense from Firebase:", error);
+    }
+    
   };
 
   const handleEditExpense = (expense) => {
@@ -126,7 +211,7 @@ const GroupIndividual = () => {
         checkList: arrayUnion(newPlace),
       });
     } catch (error) {
-      console.error("Error adding place to Firebase:", error);
+      // console.error("Error adding place to Firebase:", error);
     }
   };
 
@@ -182,11 +267,9 @@ const GroupIndividual = () => {
       setShowAddExpenseModal(false);
   
     } catch (error) {
-      console.error("Error updating expenses in Firebase:", error);
+      // console.error("Error updating expenses in Firebase:", error);
     }
   };
-
-  const totalTripBudget = expenses.reduce((sum, expense) => sum + parseFloat(expense.expenseCost || 0), 0);
 
   const handleIncludedUserChange = (user) => {
     const updatedIncludedUsers = expenseIncludedUsers.includes(user)
@@ -199,6 +282,10 @@ const GroupIndividual = () => {
     return <Login onLoginSuccess={handleLoginSuccess} />;
   }
 
+  if(isGroupLoading){
+    return <Loading />;
+  }
+
   if (!group || group.length < 1) {
     return <p>Group not found.</p>;
   }
@@ -208,15 +295,20 @@ const GroupIndividual = () => {
       <h2>{group?.groupName}</h2>
       <p>Group ID: {group?.groupId}</p>
       {/* this is a sagregated sum of all costs of expenses */}
-      <p>Total Trip Budget : {totalTripBudget}</p> 
-      <p>Your Trip Budget : 200</p>
-      <p>Your get a total amount : 200</p>
-      <p>Your need to pay amount : 200 to user 1</p>
-      <p>Your need to pay amount : 200 to user 2</p>
+      <p>Total Trip Budget : {totalTripCost}</p> 
+      {/* <p>Your Trip Budget : 200</p> */}
+      {/* <p>Your get a total amount : 200</p> */}
+      {/* {group?.groupUsers.map(user => {
+        const { tripBudget, amountSpent, amountGetBack, getBackDetails } = calculateUserFinancials(user.name);
+        return(
+          <p key={user.email}>Your need to pay amount : {amountGetBack} to {user.email}</p>
+        )}
+      )} */}
       <h3>Users:</h3>
+
       <div className="user-tags">
         {group?.groupUsers.map(user => (
-          <span key={user} className="user-tag">{user}</span>
+          <span key={user.email} className="user-tag">{user.email}</span>
         ))}
       </div>
 
@@ -242,6 +334,7 @@ const GroupIndividual = () => {
 
       <section>
         <h3>Expenses:</h3>
+        
         <button className='btn-primary' onClick={() => setShowAddExpenseModal(true)}>Add expense</button>
 
         {expenses.length > 0 &&
@@ -261,7 +354,7 @@ const GroupIndividual = () => {
                 <tr key={expense.expenseId} className="expense-item">
                   <td>{expense.expenseName}</td>
                   <td>{expense.expenseDescription}</td>
-                  <td>${expense.expenseCost}</td>
+                  <td>INR {expense.expenseCost}</td>
                   <td>{expense.expenseSpentBy}</td>
                   <td>{expense.peopleIncluded.join(', ')}</td>
                   <td>
@@ -317,18 +410,18 @@ const GroupIndividual = () => {
         >
           <option value="">Select user</option>
           {group?.groupUsers.map(user => (
-            <option key={user} value={user}>{user}</option>
-          ))}
+            <option key={user.email} value={user.email}>{user.email}</option>
+          ))}x``
         </select>
         <div className='selectUsers'>
           {group?.groupUsers.map(user => (
-            <div key={user} className='flex align-items-center'>
+            <div key={user.email} className='flex align-items-center'>
               <input
                 type='checkbox'
-                checked={expenseIncludedUsers.includes(user)}
-                onChange={() => handleIncludedUserChange(user)}
+                checked={expenseIncludedUsers.includes(user.email)}
+                onChange={() => handleIncludedUserChange(user.email)}
               />
-              {user}
+              {user.email}
             </div>
           ))}
         </div>

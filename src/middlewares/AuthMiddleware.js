@@ -8,20 +8,26 @@ const AuthMiddleware = ({ component: WrappedComponent, authRequired }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Redirect based on authentication requirement and status
-    if (isLoggedIn !== undefined) {
-      if ((authRequired && !isLoggedIn) || (!authRequired && isLoggedIn)) {
-        navigate(authRequired ? '/login' : '/');
+    // console.log(isLoggedIn);
+    // console.log(authRequired);
+    if (isLoggedIn === null || isLoggedIn === undefined) {
+      
+      if (authRequired && !isLoggedIn) {
+        navigate('/login');
+      } else if (!authRequired && isLoggedIn) {
+        navigate('/');
       }
+
     }
+
   }, [isLoggedIn, authRequired, navigate]);
 
-  // Render the loading screen while checking authentication status
+  // Render Loading component until authentication state is determined
   if (isLoggedIn === undefined) {
     return <Loading />;
   }
 
-  // Render the wrapped component if user meets authentication requirements
+  // Render the wrapped component if authentication checks are passed
   return <WrappedComponent />;
 };
 
